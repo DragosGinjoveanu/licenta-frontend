@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useGetUserQuery } from "../store/apiSlice";
+import { useGetUserQuery } from "../store/api/authApiSlice";
 
 const GuestGuard = () => {
   const { isLoading } = useGetUserQuery(undefined);

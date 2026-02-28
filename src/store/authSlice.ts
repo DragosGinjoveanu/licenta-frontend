@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { apiSlice } from "./apiSlice";
+import { authApiSlice } from "./api/authApiSlice";
 
 interface User {
   id: number;
@@ -34,17 +34,20 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     // every `getUser` will login the user to Redux store.
     builder.addMatcher(
-      apiSlice.endpoints.getUser.matchFulfilled,
+      authApiSlice.endpoints.getUser.matchFulfilled,
       (state, { payload }) => {
         state.user = payload;
         state.isAuthenticated = true;
       }
     );
     // if `getUser` is expired, we auto-clean Redux state.
-    builder.addMatcher(apiSlice.endpoints.getUser.matchRejected, (state) => {
-      state.user = null;
-      state.isAuthenticated = false;
-    });
+    builder.addMatcher(
+      authApiSlice.endpoints.getUser.matchRejected,
+      (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+      }
+    );
   },
 });
 

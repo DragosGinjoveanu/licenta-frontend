@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useGetUserQuery } from "../store/apiSlice";
+import { useGetUserQuery } from "../store/api/authApiSlice";
 import { useSelector } from "react-redux";
 
 export default function AuthGuard() {
