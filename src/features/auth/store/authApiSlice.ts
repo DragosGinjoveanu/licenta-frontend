@@ -1,6 +1,6 @@
-import { apiSlice } from "./apiSlice";
+import { baseApi } from "../../../core/api/baseApi";
 
-export const authApiSlice = apiSlice.injectEndpoints({
+export const authApiSlice = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getUser: builder.query({
       query: () => ({

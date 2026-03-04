@@ -1,6 +1,6 @@
 import { Card, Typography, Button, message } from "antd";
 import { MailOutlined } from "@ant-design/icons";
-import { useResendVerificationMutation } from "../store/api/authApiSlice";
+import { useResendVerificationMutation } from "../store/authApiSlice";
 
 const { Title, Text } = Typography;
 

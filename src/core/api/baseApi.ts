@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import type { BaseQueryFn } from "@reduxjs/toolkit/query";
-import axiosInstance from "../../axios";
+import axiosInstance from "../config/axios";
 
 export type CustomErrorType = {
   status?: number;
@@ -44,7 +44,7 @@ const axiosBaseQuery =
     }
   };
 
-export const apiSlice = createApi({
+export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: axiosBaseQuery(),
   tagTypes: ["User"],

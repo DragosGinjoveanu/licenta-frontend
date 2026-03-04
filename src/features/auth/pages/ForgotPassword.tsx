@@ -3,7 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button, Form, Input, Card, message } from "antd";
 import { Link } from "react-router-dom";
-import { useForgotPasswordMutation } from "../store/api/authApiSlice";
+import { useForgotPasswordMutation } from "../store/authApiSlice";
 
 const schema = yup.object().shape({
   email: yup

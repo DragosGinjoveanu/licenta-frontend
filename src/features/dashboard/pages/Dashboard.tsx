@@ -1,6 +1,6 @@
 // src/pages/Dashboard.tsx
 import { useSelector } from "react-redux";
-import type { RootState } from "../store/store";
+import type { RootState } from "../../../store/store";
 
 const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);

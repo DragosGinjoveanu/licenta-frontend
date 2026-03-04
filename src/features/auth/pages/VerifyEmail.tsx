@@ -3,10 +3,7 @@ import { useSelector } from "react-redux";
 import { Result, Button, Spin } from "antd";
 import { useEffect } from "react";
 
-import {
-  useVerifyEmailMutation,
-  useGetUserQuery,
-} from "../store/api/authApiSlice";
+import { useVerifyEmailMutation, useGetUserQuery } from "../store/authApiSlice";
 
 export default function VerifyEmail() {
   const { id, hash } = useParams();

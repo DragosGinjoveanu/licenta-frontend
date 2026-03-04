@@ -1,5 +1,5 @@
 import { Button, Form, Input, Card, message } from "antd";
-import { useLoginMutation } from "../store/api/authApiSlice";
+import { useLoginMutation } from "../store/authApiSlice";
 import { Link } from "react-router-dom";
 
 export default function Login() {

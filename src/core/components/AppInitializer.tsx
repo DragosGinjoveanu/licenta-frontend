@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useGetUserQuery } from "../store/api/authApiSlice";
+import { useGetUserQuery } from "../../features/auth/store/authApiSlice";
 import { Spin } from "antd";
 
 export default function AppInitializer({

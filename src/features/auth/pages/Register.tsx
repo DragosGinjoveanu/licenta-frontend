@@ -21,7 +21,7 @@ import {
   RightOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
-import { useRegisterMutation } from "../store/api/authApiSlice";
+import { useRegisterMutation } from "../store/authApiSlice";
 import { Link } from "react-router-dom";
 
 import SuccessResult from "../components/SuccessResult";

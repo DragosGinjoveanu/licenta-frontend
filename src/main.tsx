@@ -4,10 +4,10 @@ import "./index.css";
 
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
-import { router } from "./router.tsx";
+import { router } from "./router/router.tsx";
 import { store } from "./store/store";
 
-import AppInitializer from "./components/AppInitializer.tsx";
+import AppInitializer from "./core/components/AppInitializer.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

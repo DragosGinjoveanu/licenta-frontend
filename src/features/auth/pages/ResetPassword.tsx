@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { Button, Form, Input, Card, message } from "antd";
 import { useParams, useSearchParams } from "react-router-dom";
 
-import { useResetPasswordMutation } from "../store/api/authApiSlice";
+import { useResetPasswordMutation } from "../store/authApiSlice";
 
 import SuccessResult from "../components/SuccessResult";
 
