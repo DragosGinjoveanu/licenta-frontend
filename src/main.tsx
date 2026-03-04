@@ -7,10 +7,14 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router.tsx";
 import { store } from "./store/store";
 
+import AppInitializer from "./components/AppInitializer.tsx";
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <AppInitializer>
+        <RouterProvider router={router} />
+      </AppInitializer>
     </Provider>
   </StrictMode>
 );

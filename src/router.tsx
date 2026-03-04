@@ -6,6 +6,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
+import VerifyPrompt from "./pages/VerifyPrompy";
 
 import AuthGuard from "./guards/AuthGuard";
 import GuestGuard from "./guards/GuestGuard";
@@ -15,6 +17,10 @@ export const router = createBrowserRouter([
   {
     errorElement: <ErrorBoundary />,
     children: [
+      {
+        element: <VerifyEmail />,
+        path: "/verify-email/:id/:hash",
+      },
       {
         element: <GuestGuard />,
         children: [
@@ -39,6 +45,10 @@ export const router = createBrowserRouter([
       {
         element: <AuthGuard />,
         children: [
+          {
+            path: "/verify-prompt",
+            element: <VerifyPrompt />,
+          },
           {
             path: "/",
             element: <App />,

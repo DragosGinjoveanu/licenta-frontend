@@ -6,16 +6,20 @@ interface User {
   id: number;
   name: string;
   email: string;
+  email_verified_at: string | null;
+  restaurant_id: number | null;
 }
 
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
+  isInitialized: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
+  isInitialized: false,
 };
 
 const authSlice = createSlice({
@@ -25,31 +29,43 @@ const authSlice = createSlice({
     setCredentials: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
       state.isAuthenticated = true;
+      state.isInitialized = true;
     },
     logout: (state) => {
       state.user = null;
       state.isAuthenticated = false;
+      state.isInitialized = true;
+    },
+    setInitialized: (state) => {
+      state.isInitialized = true;
     },
   },
+
   extraReducers: (builder) => {
-    // every `getUser` will login the user to Redux store.
+    // set user if get it successfully
     builder.addMatcher(
       authApiSlice.endpoints.getUser.matchFulfilled,
       (state, { payload }) => {
         state.user = payload;
         state.isAuthenticated = true;
+        state.isInitialized = true;
       }
     );
-    // if `getUser` is expired, we auto-clean Redux state.
+
+    // if user session expired or invalid credentials, reset redux user state
     builder.addMatcher(
       authApiSlice.endpoints.getUser.matchRejected,
-      (state) => {
-        state.user = null;
-        state.isAuthenticated = false;
+      (state, action) => {
+        const errorStatus = action.payload?.status;
+        if (errorStatus === 401) {
+          state.user = null;
+          state.isAuthenticated = false;
+        }
+        state.isInitialized = true;
       }
     );
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, setInitialized } = authSlice.actions;
 export default authSlice.reducer;

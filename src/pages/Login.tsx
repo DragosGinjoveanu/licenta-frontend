@@ -1,18 +1,9 @@
 import { Button, Form, Input, Card, message } from "antd";
-import {
-  useLoginMutation,
-  useLazyGetUserQuery,
-} from "../store/api/authApiSlice";
-import { setCredentials } from "../store/authSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useLoginMutation } from "../store/api/authApiSlice";
+import { Link } from "react-router-dom";
 
 export default function Login() {
-  const [loginMutation, { isLoading: isLoggingIn }] = useLoginMutation();
-  const [getUser, { isLoading: isFetchingUser }] = useLazyGetUserQuery();
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [loginMutation, { isLoading }] = useLoginMutation();
 
   const onFinish = async (values: any) => {
     try {
@@ -20,21 +11,12 @@ export default function Login() {
         email: values.email,
         password: values.password,
       }).unwrap();
-
-      const userResponse = await getUser(undefined).unwrap();
-
-      dispatch(setCredentials(userResponse));
-
-      message.success(`Welcome back, ${userResponse.name}!`);
-
-      navigate("/dashboard");
+      message.success("Login successful!");
     } catch (error: any) {
       message.error("Login error! Check the email and password.");
       console.error("Detailed error:", error);
     }
   };
-
-  const isGlobalLoading = isLoggingIn || isFetchingUser;
 
   return (
     <div
@@ -86,7 +68,7 @@ export default function Login() {
               htmlType="submit"
               block
               size="large"
-              loading={isGlobalLoading}
+              loading={isLoading}
             >
               Login
             </Button>

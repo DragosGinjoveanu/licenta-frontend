@@ -1,28 +1,25 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useGetUserQuery } from "../store/api/authApiSlice";
 import { useSelector } from "react-redux";
 
 export default function AuthGuard() {
   const location = useLocation();
 
-  const { isLoading, isFetching } = useGetUserQuery(undefined);
-  const isAuthenticated = useSelector(
-    (state: any) => state.auth.isAuthenticated
-  );
+  const { isAuthenticated, user } = useSelector((state: any) => state.auth);
 
-  const isCheckingSession = isLoading || (isFetching && !isAuthenticated);
-
-  if (isCheckingSession) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <h2>Verifying session...</h2>
-      </div>
-    );
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return isAuthenticated ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
-  );
+  const isVerified = user?.email_verified_at !== null;
+  const isVerificationRoute = location.pathname.startsWith("/verify-");
+
+  if (!isVerified && !isVerificationRoute) {
+    return <Navigate to="/verify-prompt" replace />;
+  }
+
+  if (isVerified && isVerificationRoute) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <Outlet />;
 }

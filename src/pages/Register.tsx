@@ -111,8 +111,8 @@ export default function Register() {
   if (isCreated) {
     return (
       <SuccessResult
-        title="Account created successfully!"
-        subTitle="Your account is ready. Please log in with your credentials to start managing your restaurant."
+        title="Account created! Please verify your email address!"
+        subTitle="We have sent a confirmation link to your email address. Please check your email inbox (and Spam folder) and access the link to log in."
       />
     );
   }

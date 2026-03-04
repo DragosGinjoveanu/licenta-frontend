@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Result, Button, Form, Input, Card, message } from "antd";
-import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import { Button, Form, Input, Card, message } from "antd";
+import { useParams, useSearchParams } from "react-router-dom";
 
 import { useResetPasswordMutation } from "../store/api/authApiSlice";
 

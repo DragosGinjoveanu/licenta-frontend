@@ -1,84 +1,61 @@
 import { apiSlice } from "./apiSlice";
-import axiosInstance from "../../axios";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    register: builder.mutation({
-      queryFn: async (data) => {
-        try {
-          await axiosInstance.get("/sanctum/csrf-cookie");
-          const result = await axiosInstance.post("/register", data);
-          return { data: result.data };
-        } catch (error: any) {
-          return {
-            error: {
-              status: error.response?.status,
-              data: error.response?.data || error.message,
-            },
-          };
-        }
-      },
-    }),
-
-    login: builder.mutation({
-      queryFn: async (credentials) => {
-        try {
-          await axiosInstance.get("/sanctum/csrf-cookie");
-
-          const result = await axiosInstance.post("/login", credentials);
-
-          return { data: result.data }; // empty return, 204
-        } catch (error: any) {
-          return {
-            error: {
-              status: error.response?.status,
-              data: error.response?.data || error.message,
-            },
-          };
-        }
-      },
-    }),
-
     getUser: builder.query({
       query: () => ({
         url: "/api/user",
         method: "GET",
       }),
+      providesTags: ["User"],
+    }),
+
+    register: builder.mutation({
+      query: (data) => ({
+        url: "/register",
+        method: "POST",
+        data,
+      }),
+    }),
+
+    login: builder.mutation({
+      query: (credentials) => ({
+        url: "/login",
+        method: "POST",
+        data: credentials,
+      }),
+      invalidatesTags: ["User"],
     }),
 
     forgotPassword: builder.mutation({
-      queryFn: async (data) => {
-        try {
-          await axiosInstance.get("/sanctum/csrf-cookie");
-          const result = await axiosInstance.post("/forgot-password", data);
-
-          return { data: result.data };
-        } catch (error: any) {
-          return {
-            error: {
-              status: error.response?.status,
-              data: error.response?.data || error.message,
-            },
-          };
-        }
-      },
+      query: (data) => ({
+        url: "/forgot-password",
+        method: "POST",
+        data,
+      }),
     }),
 
     resetPassword: builder.mutation({
-      queryFn: async (data) => {
-        try {
-          await axiosInstance.get("/sanctum/csrf-cookie");
-          const result = await axiosInstance.post("/reset-password", data);
-          return { data: result.data };
-        } catch (error: any) {
-          return {
-            error: {
-              status: error.response?.status,
-              data: error.response?.data || error.message,
-            },
-          };
-        }
-      },
+      query: (data) => ({
+        url: "/reset-password",
+        method: "POST",
+        data,
+      }),
+    }),
+
+    verifyEmail: builder.mutation<void, { url: string }>({
+      query: ({ url }) => ({
+        url,
+        method: "GET",
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    resendVerification: builder.mutation<void, void>({
+      query: () => ({
+        url: "/email/verification-notification",
+        method: "POST",
+      }),
     }),
   }),
   overrideExisting: false,
@@ -87,8 +64,10 @@ export const authApiSlice = apiSlice.injectEndpoints({
 export const {
   useRegisterMutation,
   useLoginMutation,
-  useGetUserQuery,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useResendVerificationMutation,
+  useVerifyEmailMutation,
+  useGetUserQuery,
   useLazyGetUserQuery,
 } = authApiSlice;

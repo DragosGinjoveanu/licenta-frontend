@@ -1,23 +1,19 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useGetUserQuery } from "../store/api/authApiSlice";
 
 const GuestGuard = () => {
-  const { isLoading } = useGetUserQuery(undefined);
+  const { isAuthenticated, user } = useSelector((state: any) => state.auth);
 
-  const isAuthenticated = useSelector(
-    (state: any) => state.auth.isAuthenticated
-  );
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <h2>Loading...</h2>
-      </div>
+  if (isAuthenticated) {
+    const isVerified = user?.email_verified_at !== null;
+    return isVerified ? (
+      <Navigate to="/dashboard" replace />
+    ) : (
+      <Navigate to="/verify-prompt" replace />
     );
   }
 
-  return isAuthenticated ? <Navigate to="/dashboard" replace /> : <Outlet />;
+  return <Outlet />;
 };
 
 export default GuestGuard;

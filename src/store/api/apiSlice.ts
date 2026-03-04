@@ -1,11 +1,36 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
+import type { BaseQueryFn } from "@reduxjs/toolkit/query";
 import axiosInstance from "../../axios";
 
-// Create a custom baseQuery using our pre-configured Axios instance
-// This allows RTK Query to use our Axios setup (with credentials, XSRF tokens, etc.)
+export type CustomErrorType = {
+  status?: number;
+  data?: any;
+};
+
 const axiosBaseQuery =
-  () =>
-  async ({ url, method, data, params }: any) => {
+  (): BaseQueryFn<
+    {
+      url: string;
+      method?: string;
+      data?: any;
+      params?: any;
+    },
+    unknown,
+    CustomErrorType
+  > =>
+  async ({ url, method = "GET", data, params }) => {
+    const requiresCsrf = ["POST", "PUT", "DELETE", "PATCH"].includes(
+      method.toUpperCase()
+    );
+
+    if (requiresCsrf) {
+      try {
+        await axiosInstance.get("/sanctum/csrf-cookie");
+      } catch (csrfError) {
+        console.warn("CSRF Fetch failed", csrfError);
+      }
+    }
+
     try {
       const result = await axiosInstance({ url, method, data, params });
       return { data: result.data };
@@ -20,7 +45,7 @@ const axiosBaseQuery =
   };
 
 export const apiSlice = createApi({
-  reducerPath: "api", // The name of the slice in the Redux store
+  reducerPath: "api",
   baseQuery: axiosBaseQuery(),
   tagTypes: ["User"],
   endpoints: () => ({}),
