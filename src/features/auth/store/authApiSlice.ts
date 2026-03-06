@@ -27,6 +27,24 @@ export const authApiSlice = baseApi.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
+    logoutApi: builder.mutation<void, void>({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.warn("Server logout failed or session already expired");
+        } finally {
+          dispatch({ type: "auth/logout" });
+
+          dispatch(baseApi.util.resetApiState());
+        }
+      },
+    }),
+
     forgotPassword: builder.mutation({
       query: (data) => ({
         url: "/forgot-password",
@@ -64,6 +82,7 @@ export const authApiSlice = baseApi.injectEndpoints({
 export const {
   useRegisterMutation,
   useLoginMutation,
+  useLogoutApiMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useResendVerificationMutation,

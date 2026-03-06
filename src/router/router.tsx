@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import App from "../App";
+import MainLayout from "../core/components/layouts/MainLayout";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import ForgotPassword from "../features/auth/pages/ForgotPassword";
 import Login from "../features/auth/pages/Login";
@@ -51,14 +51,14 @@ export const router = createBrowserRouter([
           },
           {
             path: "/",
-            element: <App />,
+            element: <MainLayout />,
             children: [
               {
                 index: true,
                 element: <Navigate to="/dashboard" replace />,
               },
               {
-                path: "/dashboard",
+                path: "dashboard",
                 element: <Dashboard />,
               },
             ],

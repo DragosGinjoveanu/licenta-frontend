@@ -1,9 +1,10 @@
-// src/pages/Dashboard.tsx
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../store/store";
 
 const Dashboard = () => {
   const user = useSelector((state: RootState) => state.auth.user);
+
+  console.log("dashboard rendered");
 
   return (
     <div style={{ padding: "20px", textAlign: "center" }}>
