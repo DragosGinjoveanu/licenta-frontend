@@ -1,5 +1,10 @@
 import { Layout, Menu } from "antd";
-import { DashboardOutlined, ShopOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  ShopOutlined,
+  MenuOutlined,
+  DatabaseOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 const { Sider } = Layout;
@@ -52,6 +57,18 @@ export default function Sidebar({ collapsed }: SidebarProps) {
             icon: <ShopOutlined />,
             label: "My Restaurant",
             onClick: () => navigate("/restaurant"),
+          },
+          {
+            key: "3",
+            icon: <MenuOutlined />,
+            label: "Menu Builder",
+            onClick: () => navigate("/menu"),
+          },
+          {
+            key: "4",
+            icon: <DatabaseOutlined />,
+            label: "Inventory",
+            onClick: () => navigate("/inventory"),
           },
         ]}
       />
