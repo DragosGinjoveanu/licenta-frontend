@@ -19,7 +19,9 @@ import MyRestaurant from "../features/restaurant/pages/MyRestaurant";
 import RestaurantGuard from "../features/restaurant/guards/RestaurantGuard";
 import OnboardingGuard from "../features/restaurant/guards/OnboardingGuard";
 
-import MenuBuilder from "../features/menu/pages/MenuBuilder";
+import MenuCatalog from "../features/menu/pages/MenuCatalog";
+import CategoryDetails from "../features/menu/pages/CategoryDetails";
+import RecipeBuilder from "../features/menu/pages/RecipeBuilder";
 
 import Inventory from "../features/inventory/pages/Inventory";
 
@@ -89,7 +91,15 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: "menu",
-                    element: <MenuBuilder />,
+                    element: <MenuCatalog />,
+                  },
+                  {
+                    path: "menu/categories/:id",
+                    element: <CategoryDetails />,
+                  },
+                  {
+                    path: "/menu/products/:id/recipe",
+                    element: <RecipeBuilder />,
                   },
                   {
                     path: "inventory",

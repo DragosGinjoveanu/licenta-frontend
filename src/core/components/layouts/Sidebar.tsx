@@ -5,7 +5,7 @@ import {
   MenuOutlined,
   DatabaseOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const { Sider } = Layout;
 
@@ -15,6 +15,16 @@ interface SidebarProps {
 
 export default function Sidebar({ collapsed }: SidebarProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const getSelectedKey = () => {
+    const path = location.pathname;
+    if (path.startsWith("/dashboard")) return "1";
+    if (path.startsWith("/restaurant")) return "2";
+    if (path.startsWith("/menu")) return "3";
+    if (path.startsWith("/inventory")) return "4";
+    return "1";
+  };
 
   return (
     <Sider
@@ -44,7 +54,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
       <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={["1"]}
+        selectedKeys={[getSelectedKey()]}
         items={[
           {
             key: "1",
@@ -61,7 +71,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
           {
             key: "3",
             icon: <MenuOutlined />,
-            label: "Menu Builder",
+            label: "Menu Catalog",
             onClick: () => navigate("/menu"),
           },
           {
