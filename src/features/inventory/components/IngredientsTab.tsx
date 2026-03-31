@@ -48,7 +48,6 @@ export default function IngredientsTab() {
   const handleSubmit = async (values: any) => {
     try {
       if (editingIngredient) {
-        console.log(values.supplier_id);
         await updateIngredient({
           ...values,
           id: editingIngredient.id,
