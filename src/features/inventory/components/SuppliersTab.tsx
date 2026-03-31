@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Button,
   Modal,
@@ -9,9 +9,12 @@ import {
   Space,
   Popconfirm,
   Typography,
+  Row,
+  Col,
 } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import { PlusOutlined } from "@ant-design/icons";
+import type { ColumnsType, TableProps } from "antd/es/table";
+import type { InputRef } from "antd";
+import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import {
   useGetSuppliersQuery,
   useCreateSupplierMutation,
@@ -26,7 +29,12 @@ export default function SuppliersTab() {
   const [isSupplierModalOpen, setIsSupplierModalOpen] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
 
+  // === TABLE CONTROL STATES PENTRU FILTRE/SORTĂRI ===
+  const [filteredInfo, setFilteredInfo] = useState<Record<string, any>>({});
+  const [sortedInfo, setSortedInfo] = useState<any>({});
+
   const [form] = Form.useForm();
+  const searchInput = useRef<InputRef>(null);
 
   const { data: suppliers, isLoading: isLoadingSuppliers } =
     useGetSuppliersQuery();
@@ -45,7 +53,6 @@ export default function SuppliersTab() {
         await createSupplier(values).unwrap();
         message.success("Supplier added successfully!");
       }
-
       setIsSupplierModalOpen(false);
       form.resetFields();
       setEditingSupplier(null);
@@ -77,11 +84,108 @@ export default function SuppliersTab() {
     }
   };
 
+  // === HANDLERS PENTRU TABEL ===
+  const handleTableChange: TableProps<Supplier>["onChange"] = (
+    pagination,
+    filters,
+    sorter
+  ) => {
+    setFilteredInfo(filters);
+    setSortedInfo(sorter);
+  };
+
+  const handleClearAllFilters = () => {
+    setFilteredInfo({});
+    setSortedInfo({});
+  };
+
+  const hasActiveFilters =
+    Object.values(filteredInfo).some(
+      (val) => Array.isArray(val) && val.length > 0
+    ) || !!sortedInfo.order;
+
+  // Funcție SIMPLĂ doar pentru căutare text (pe Supplier Name)
+  const getTextColumnProps = (
+    dataIndex: keyof Supplier,
+    placeholder: string
+  ) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }: any) => (
+      <div
+        style={{ padding: 12, width: 250 }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${placeholder}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => confirm()}
+          style={{ marginBottom: 16, display: "block" }}
+        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "8px",
+          }}
+        >
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ flex: 1 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              clearFilters && clearFilters();
+              setSelectedKeys([]);
+              confirm();
+            }}
+            size="small"
+            style={{ flex: 1 }}
+          >
+            Reset
+          </Button>
+        </div>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+    ),
+    onFilter: (value: any, record: Supplier) => {
+      const recordValue = record[dataIndex] as string | undefined;
+      return recordValue
+        ? recordValue.toLowerCase().includes((value as string).toLowerCase())
+        : false;
+    },
+    filterDropdownProps: {
+      onOpenChange: (visible: boolean) => {
+        if (visible) {
+          setTimeout(() => searchInput.current?.select(), 100);
+        }
+      },
+    },
+  });
+
   const supplierColumns: ColumnsType<Supplier> = [
     {
       title: "Supplier Name",
       dataIndex: "name",
       key: "name",
+      ...getTextColumnProps("name", "supplier name"),
+      filteredValue: filteredInfo.name || null,
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      sortOrder: sortedInfo.columnKey === "name" ? sortedInfo.order : null,
       render: (text) => <strong>{text}</strong>,
     },
     {
@@ -103,6 +207,22 @@ export default function SuppliersTab() {
       render: (text) => text || <Text type="secondary">-</Text>,
     },
     {
+      title: "Added On",
+      dataIndex: "created_at",
+      key: "created_at",
+      sorter: (a, b) => {
+        const dateA = new Date(a.created_at || 0).getTime();
+        const dateB = new Date(b.created_at || 0).getTime();
+        return dateA - dateB;
+      },
+      sortOrder:
+        sortedInfo.columnKey === "created_at" ? sortedInfo.order : null,
+      render: (date) => {
+        if (!date) return "-";
+        return new Date(date).toLocaleDateString();
+      },
+    },
+    {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
@@ -118,7 +238,7 @@ export default function SuppliersTab() {
           <Popconfirm
             title="Delete the supplier"
             description="Are you sure to delete this supplier? Ingredients linked to them will revert to 'Own Supply'."
-            onConfirm={() => handleDeleteSupplier(record.id)}
+            onConfirm={() => handleDelete(record.id)}
             okText="Yes, Delete"
             cancelText="Cancel"
             okButtonProps={{ danger: true }}
@@ -134,31 +254,38 @@ export default function SuppliersTab() {
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: 16,
-        }}
-      >
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => {
-            setEditingSupplier(null);
-            form.resetFields();
-            setIsSupplierModalOpen(true);
-          }}
-        >
-          Add Supplier
-        </Button>
+      <div style={{ marginBottom: 16 }}>
+        <Row justify="space-between" align="middle">
+          <Col>
+            {hasActiveFilters && (
+              <Button type="dashed" danger onClick={handleClearAllFilters}>
+                Clear All Filters
+              </Button>
+            )}
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => {
+                setEditingSupplier(null);
+                form.resetFields();
+                setIsSupplierModalOpen(true);
+              }}
+            >
+              Add Supplier
+            </Button>
+          </Col>
+        </Row>
       </div>
+
       <Table
         columns={supplierColumns}
         dataSource={suppliers}
         rowKey="id"
         loading={isLoadingSuppliers}
         pagination={{ pageSize: 10 }}
+        onChange={handleTableChange}
       />
 
       <Modal
