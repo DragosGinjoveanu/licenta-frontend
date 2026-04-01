@@ -22,6 +22,8 @@ import OnboardingGuard from "../features/restaurant/guards/OnboardingGuard";
 import MenuCatalog from "../features/menu/pages/MenuCatalog";
 import CategoryDetails from "../features/menu/pages/CategoryDetails";
 import RecipeBuilder from "../features/menu/pages/RecipeBuilder";
+import MenuBuilderList from "../features/menu/pages/MenuBuilderList";
+import MenuCanvas from "../features/menu/pages/MenuCanvas";
 
 import Inventory from "../features/inventory/pages/Inventory";
 
@@ -104,6 +106,14 @@ export const router = createBrowserRouter([
                   {
                     path: "inventory",
                     element: <Inventory />,
+                  },
+                  {
+                    path: "/menu-builder",
+                    element: <MenuBuilderList />,
+                  },
+                  {
+                    path: "/menu-builder/:id",
+                    element: <MenuCanvas />,
                   },
                 ],
               },

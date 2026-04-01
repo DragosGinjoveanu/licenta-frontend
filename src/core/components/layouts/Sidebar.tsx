@@ -4,6 +4,7 @@ import {
   ShopOutlined,
   MenuOutlined,
   DatabaseOutlined,
+  HighlightOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -21,6 +22,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
     const path = location.pathname;
     if (path.startsWith("/dashboard")) return "1";
     if (path.startsWith("/restaurant")) return "2";
+    if (path.startsWith("/menu-builder")) return "5";
     if (path.startsWith("/menu")) return "3";
     if (path.startsWith("/inventory")) return "4";
     return "1";
@@ -73,6 +75,12 @@ export default function Sidebar({ collapsed }: SidebarProps) {
             icon: <MenuOutlined />,
             label: "Menu Catalog",
             onClick: () => navigate("/menu"),
+          },
+          {
+            key: "5",
+            icon: <HighlightOutlined />,
+            label: "Menu Builder",
+            onClick: () => navigate("/menu-builder"),
           },
           {
             key: "4",

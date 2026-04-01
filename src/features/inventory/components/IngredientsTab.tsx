@@ -243,20 +243,23 @@ export default function IngredientsTab() {
             />
           </Form.Item>
 
-          {/* Folosim Space pentru a pune unitatea de măsură și stocul pe același rând */}
           <Space style={{ display: "flex", marginBottom: 8 }} align="baseline">
             <Form.Item
               name="unit_of_measure"
               label="Unit (UoM)"
               rules={[{ required: true, message: "Required" }]}
             >
-              <Select style={{ width: 120 }} placeholder="e.g. kg, L, pcs">
-                <Select.Option value="kg">kg</Select.Option>
-                <Select.Option value="g">g</Select.Option>
-                <Select.Option value="L">Litru (L)</Select.Option>
-                <Select.Option value="ml">ml</Select.Option>
-                <Select.Option value="buc">Bucată</Select.Option>
-              </Select>
+              <Select
+                style={{ width: 120 }}
+                placeholder="e.g. kg, L, pcs"
+                options={[
+                  { value: "kg", label: "kg" },
+                  { value: "g", label: "g" },
+                  { value: "L", label: "Litru (L)" },
+                  { value: "ml", label: "ml" },
+                  { value: "buc", label: "Bucată" },
+                ]}
+              />
             </Form.Item>
 
             <Form.Item
