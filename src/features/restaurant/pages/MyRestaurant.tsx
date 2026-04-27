@@ -18,7 +18,6 @@ export default function MyRestaurant() {
             Manage your core restaurant information and billing details.
           </Text>
 
-          {/* Pe viitor aici vom avea un formular de editare și vom trage datele reale din backend */}
           <div style={{ background: "#fafafa", padding: 16, borderRadius: 8 }}>
             <p>
               <strong>Associated Restaurant ID:</strong> {user?.restaurant_id}

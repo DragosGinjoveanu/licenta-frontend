@@ -150,7 +150,7 @@ export default function IngredientsTab() {
           </Button>
           <Popconfirm
             title="Delete ingredient"
-            description="Are you sure you want to delete this ingredient?"
+            description="Are you sure you want to delete this ingredient? It will be automatically removed from ALL product recipes where it is used. This action cannot be undone."
             onConfirm={() => handleDelete(record.id)}
             okText="Yes"
             cancelText="No"

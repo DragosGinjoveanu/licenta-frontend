@@ -47,6 +47,7 @@ const axiosBaseQuery =
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: axiosBaseQuery(),
+  refetchOnFocus: true,
   tagTypes: [
     "User",
     "Category",

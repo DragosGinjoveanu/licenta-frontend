@@ -122,7 +122,7 @@ export default function CategoriesTab() {
           </Button>
           <Popconfirm
             title="Delete category"
-            description="Are you sure? Products inside this category will not be deleted, but they will lose this label."
+            description="Are you sure? Products inside won't be deleted, but this category will be permanently removed from all Menus where it is used. Products will simply lose this category label."
             onConfirm={() => handleDelete(record.id)}
             okText="Yes"
             cancelText="No"

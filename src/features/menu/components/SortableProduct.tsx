@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Card, Checkbox, Space, Typography, Button } from "antd";
+import { Card, Checkbox, Space, Typography, Button, Tag } from "antd";
 import { HolderOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { MenuProduct } from "../store/menuBuilderApiSlice";
 
@@ -37,17 +37,18 @@ export function SortableProduct({
     zIndex: isDragging ? 999 : "auto",
   };
 
+  const isAvailable = product.product_details?.is_available;
+  const hasDescription = !!product.product_details?.description;
+  const hasIngredients =
+    (product.product_details?.ingredients?.length ?? 0) > 0;
+
   return (
     <div ref={setNodeRef} style={style}>
       <Card
         size="small"
-        styles={{
-          body: {
-            padding: "8px 12px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-          },
+        style={{
+          border: !isAvailable ? "1px dashed #ff4d4f" : "1px solid #f0f0f0",
+          backgroundColor: !isAvailable ? "#fff1f0" : "#fff",
         }}
       >
         <div
@@ -59,7 +60,19 @@ export function SortableProduct({
         </div>
 
         <div style={{ flex: 1 }}>
-          <Text strong>{product.product_details?.name}</Text>
+          <Space>
+            <Text
+              strong
+              style={{ color: !isAvailable ? "#cf1322" : "inherit" }}
+            >
+              {product.product_details?.name}
+            </Text>
+            {!isAvailable && (
+              <Tag color="error" style={{ fontSize: "10px" }}>
+                HIDDEN IN CATALOG
+              </Tag>
+            )}
+          </Space>
           <div style={{ marginTop: "4px" }}>
             <Space size="middle">
               <Checkbox
@@ -72,23 +85,36 @@ export function SortableProduct({
               </Checkbox>
               <Checkbox
                 checked={product.show_description}
+                disabled={!hasDescription}
                 onChange={(e) =>
                   onUpdateOptions(product.id, {
                     show_description: e.target.checked,
                   })
                 }
               >
-                Description
+                Description{" "}
+                {!hasDescription && (
+                  <Text disabled style={{ fontSize: "11px" }}>
+                    (Empty)
+                  </Text>
+                )}
               </Checkbox>
+
               <Checkbox
                 checked={product.show_ingredients}
+                disabled={!hasIngredients}
                 onChange={(e) =>
                   onUpdateOptions(product.id, {
                     show_ingredients: e.target.checked,
                   })
                 }
               >
-                Ingredients
+                Ingredients{" "}
+                {!hasIngredients && (
+                  <Text disabled style={{ fontSize: "11px" }}>
+                    (None)
+                  </Text>
+                )}
               </Checkbox>
             </Space>
           </div>

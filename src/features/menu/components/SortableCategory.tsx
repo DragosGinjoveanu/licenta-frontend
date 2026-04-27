@@ -73,8 +73,11 @@ export function SortableCategory({
 
   const existingProductIds =
     category.menu_products?.map((p) => p.product_id) || [];
+  // only products marked as available
   const selectableProducts =
-    availableProducts?.filter((p) => !existingProductIds.includes(p.id)) || [];
+    availableProducts?.filter(
+      (p) => !existingProductIds.includes(p.id) && p.is_available
+    ) || [];
 
   const handleAddProduct = async () => {
     if (!selectedProductId) return;
@@ -141,7 +144,6 @@ export function SortableCategory({
             />
           ))}
 
-          {/* Mesaj când nu sunt produse */}
           {(!category.menu_products || category.menu_products.length === 0) &&
             !isAdding && (
               <div

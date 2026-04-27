@@ -1,10 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Layout, Button, Typography, Space, Spin, Result, message } from "antd";
+import { useReactToPrint } from "react-to-print";
+import {
+  Layout,
+  Button,
+  Typography,
+  Space,
+  Spin,
+  Result,
+  Modal,
+  message,
+} from "antd";
 import {
   ArrowLeftOutlined,
-  FilePdfOutlined,
   PlusOutlined,
+  EyeOutlined,
+  PrinterOutlined,
 } from "@ant-design/icons";
 import {
   DndContext,
@@ -37,6 +48,7 @@ import {
 import type { MenuCategory } from "../store/menuBuilderApiSlice";
 
 import { SortableCategory } from "../components/SortableCategory";
+import { PrintableMenu } from "../components/PrintableMenu";
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
@@ -63,6 +75,8 @@ export default function MenuCanvas() {
   const [updateMenu] = useUpdateMenuMutation();
 
   const [localCategories, setLocalCategories] = useState<MenuCategory[]>([]);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (menu?.menu_categories) {
@@ -74,6 +88,13 @@ export default function MenuCanvas() {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: menu?.name
+      ? `${menu.name.replace(/\s+/g, "-").toLowerCase()}`
+      : "menu",
+  });
 
   const handleRenameMenu = async (newName: string) => {
     if (!newName.trim() || newName === menu?.name) return;
@@ -235,8 +256,12 @@ export default function MenuCanvas() {
         </Space>
 
         <Space>
-          <Button type="primary" icon={<FilePdfOutlined />}>
-            Export PDF
+          <Button
+            type="primary"
+            icon={<EyeOutlined />}
+            onClick={() => setIsPreviewOpen(true)}
+          >
+            Preview & Export
           </Button>
         </Space>
       </Header>
@@ -371,6 +396,43 @@ export default function MenuCanvas() {
             )}
           </div>
         </Content>
+        <Modal
+          title={
+            <Space>
+              <EyeOutlined /> Menu Preview
+            </Space>
+          }
+          open={isPreviewOpen}
+          onCancel={() => setIsPreviewOpen(false)}
+          width={1000}
+          footer={[
+            <Button key="cancel" onClick={() => setIsPreviewOpen(false)}>
+              Close
+            </Button>,
+            <Button
+              key="print"
+              type="primary"
+              icon={<PrinterOutlined />}
+              onClick={handlePrint}
+            >
+              Print / Save as PDF
+            </Button>,
+          ]}
+        >
+          <div
+            style={{
+              backgroundColor: "#525659",
+              padding: "40px 20px",
+              maxHeight: "70vh",
+              overflowY: "auto",
+              display: "flex",
+              justifyContent: "center",
+              borderRadius: "6px",
+            }}
+          >
+            {menu && <PrintableMenu ref={printRef} menu={menu} />}
+          </div>
+        </Modal>
       </Layout>
     </Layout>
   );

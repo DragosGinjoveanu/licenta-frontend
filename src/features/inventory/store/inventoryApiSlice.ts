@@ -81,12 +81,12 @@ export const inventoryApiSlice = baseApi.injectEndpoints({
         method: "PUT",
         data,
       }),
-      invalidatesTags: ["Ingredient"],
+      invalidatesTags: ["Ingredient", "Product", "Menu"],
     }),
 
     deleteIngredient: builder.mutation<{ message: string }, number>({
       query: (id) => ({ url: `/api/ingredients/${id}`, method: "DELETE" }),
-      invalidatesTags: ["Ingredient"],
+      invalidatesTags: ["Ingredient", "Menu", "Product"],
     }),
   }),
   overrideExisting: false,

@@ -107,6 +107,7 @@ export const menuBuilderApiSlice = baseApi.injectEndpoints({
         url: `/api/products?category_ids[]=${categoryId}`,
         method: "GET",
       }),
+      providesTags: ["Product"],
     }),
 
     addProductToMenuCategory: builder.mutation<

@@ -15,6 +15,7 @@ export interface Product {
   price: string;
   is_available: boolean;
   categories?: Category[];
+  ingredients?: { id: number; name: string }[];
 }
 
 export interface ProductPayload {
@@ -68,12 +69,12 @@ export const menuApiSlice = baseApi.injectEndpoints({
         method: "PUT",
         data,
       }),
-      invalidatesTags: ["Category", "Product"],
+      invalidatesTags: ["Category", "Product", "Menu"],
     }),
 
     deleteCategory: builder.mutation<{ message: string }, number>({
       query: (id) => ({ url: `/api/categories/${id}`, method: "DELETE" }),
-      invalidatesTags: ["Category", "Product"],
+      invalidatesTags: ["Category", "Product", "Menu"],
     }),
 
     detachProductFromCategory: builder.mutation<
@@ -84,7 +85,7 @@ export const menuApiSlice = baseApi.injectEndpoints({
         url: `/api/categories/${categoryId}/products/${productId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Category", "Product"],
+      invalidatesTags: ["Category", "Product", "Menu"],
     }),
 
     getAvailableProducts: builder.query<Product[], number>({
@@ -104,7 +105,7 @@ export const menuApiSlice = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: ["Category", "Product"],
+      invalidatesTags: ["Category", "Product", "Menu"],
     }),
 
     getCategoryById: builder.query<CategoryWithProducts, GetCategoryFilters>({
@@ -149,12 +150,12 @@ export const menuApiSlice = baseApi.injectEndpoints({
         data,
       }),
 
-      invalidatesTags: ["Product", "Category"],
+      invalidatesTags: ["Product", "Category", "Menu"],
     }),
 
     deleteProduct: builder.mutation<{ message: string }, number>({
       query: (id) => ({ url: `/api/products/${id}`, method: "DELETE" }),
-      invalidatesTags: ["Product", "Category"],
+      invalidatesTags: ["Product", "Category", "Menu"],
     }),
 
     getIngredients: builder.query<any[], void>({
@@ -185,7 +186,7 @@ export const menuApiSlice = baseApi.injectEndpoints({
         method: "PUT",
         data,
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: ["Product", "Menu"],
     }),
   }),
   overrideExisting: false,

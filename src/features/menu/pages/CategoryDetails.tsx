@@ -9,8 +9,6 @@ import {
   Space,
   Tag,
   InputNumber,
-  Row,
-  Col,
   Modal,
   message,
   Popconfirm,
@@ -294,7 +292,9 @@ export default function CategoryDetails() {
         <Space size="middle">
           <Popconfirm
             title="Remove from category?"
-            description={`Are you sure you want to remove "${record.name}" from this category?`}
+            description={
+              "Are you sure? Removing the product from this category will also delete it from any Menu currently displaying this category section."
+            }
             onConfirm={() => handleDetach(record.id)}
             okText="Yes"
             cancelText="No"
