@@ -53,18 +53,6 @@ export default function MyRestaurant() {
         </div>
       ),
     },
-    {
-      key: "4",
-      label: "Suppliers",
-      children: (
-        <div style={{ padding: "40px 0", textAlign: "center" }}>
-          <Title level={4}>🚧 Coming Soon: Suppliers Directory</Title>
-          <Text type="secondary">
-            Manage your inventory providers and contact persons.
-          </Text>
-        </div>
-      ),
-    },
   ];
 
   return (

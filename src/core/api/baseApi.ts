@@ -57,6 +57,7 @@ export const baseApi = createApi({
     "Product",
     "Menu",
     "Order",
+    "Dashboard",
   ],
   endpoints: () => ({}),
 });

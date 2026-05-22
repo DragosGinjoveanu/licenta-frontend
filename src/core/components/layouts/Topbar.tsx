@@ -34,14 +34,9 @@ export default function Topbar({ collapsed, setCollapsed }: TopbarProps) {
         label: "Edit Profile",
         onClick: () => navigate("/profile"),
       },
-      {
-        key: "2",
-        icon: <SettingOutlined />,
-        label: "Settings",
-      },
       { type: "divider" as const },
       {
-        key: "3",
+        key: "2",
         icon: <LogoutOutlined />,
         label: "Logout",
         danger: true,
