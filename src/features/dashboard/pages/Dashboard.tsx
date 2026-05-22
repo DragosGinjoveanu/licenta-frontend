@@ -280,7 +280,7 @@ export default function Dashboard() {
                       tickFormatter={(value) => `${value} RON`}
                     />
                     <RechartsTooltip
-                      formatter={(value: any, name: string) => [
+                      formatter={(value: any, name: any) => [
                         typeof value === "number"
                           ? `${value.toFixed(2)} RON`
                           : value,

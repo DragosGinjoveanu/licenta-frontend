@@ -5,6 +5,8 @@ import ErrorBoundary from "../core/components/ErrorBoundary";
 
 import Dashboard from "../features/dashboard/pages/Dashboard";
 
+import Profile from "../features/profile/pages/Profile";
+
 import ForgotPassword from "../features/auth/pages/ForgotPassword";
 import Login from "../features/auth/pages/Login";
 import Register from "../features/auth/pages/Register";
@@ -91,6 +93,10 @@ export const router = createBrowserRouter([
                   {
                     path: "dashboard",
                     element: <Dashboard />,
+                  },
+                  {
+                    path: "profile",
+                    element: <Profile />,
                   },
                   {
                     path: "restaurant",

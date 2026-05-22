@@ -220,7 +220,6 @@ export default function MenuCanvas() {
     );
   }
 
-  // Ce categorii sunt deja in meniu (ca sa nu le mai afisam in Sidebar)
   const usedCategoryIds = localCategories.map((c) => c.category_id);
   const availableCategories =
     catalogCategories?.filter((c) => !usedCategoryIds.includes(c.id)) || [];
