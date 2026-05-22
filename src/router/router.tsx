@@ -27,6 +27,11 @@ import MenuCanvas from "../features/menu/pages/MenuCanvas";
 
 import Inventory from "../features/inventory/pages/Inventory";
 
+import KdsDashboard from "../features/orders/pages/KdsDashboard";
+import PosDashboard from "../features/orders/pages/PosDashboard";
+import OrdersHistory from "../features/orders/pages/OrdersHistory";
+import ActiveOrders from "../features/orders/pages/ActiveOrders";
+
 export const router = createBrowserRouter([
   {
     errorElement: <ErrorBoundary />,
@@ -114,6 +119,22 @@ export const router = createBrowserRouter([
                   {
                     path: "/menu-builder/:id",
                     element: <MenuCanvas />,
+                  },
+                  {
+                    path: "/orders/active",
+                    element: <ActiveOrders />,
+                  },
+                  {
+                    path: "/orders/kds",
+                    element: <KdsDashboard />,
+                  },
+                  {
+                    path: "/orders/pos",
+                    element: <PosDashboard />,
+                  },
+                  {
+                    path: "/orders/history",
+                    element: <OrdersHistory />,
                   },
                 ],
               },

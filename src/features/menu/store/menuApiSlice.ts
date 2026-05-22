@@ -16,6 +16,7 @@ export interface Product {
   is_available: boolean;
   categories?: Category[];
   ingredients?: { id: number; name: string }[];
+  max_quantity: number;
 }
 
 export interface ProductPayload {

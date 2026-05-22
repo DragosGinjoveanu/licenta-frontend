@@ -5,6 +5,11 @@ import {
   MenuOutlined,
   DatabaseOutlined,
   HighlightOutlined,
+  ShoppingCartOutlined,
+  DesktopOutlined,
+  FireOutlined,
+  HistoryOutlined,
+  CarryOutOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -20,12 +25,19 @@ export default function Sidebar({ collapsed }: SidebarProps) {
 
   const getSelectedKey = () => {
     const path = location.pathname;
-    if (path.startsWith("/dashboard")) return "1";
-    if (path.startsWith("/restaurant")) return "2";
-    if (path.startsWith("/menu-builder")) return "5";
-    if (path.startsWith("/menu")) return "3";
-    if (path.startsWith("/inventory")) return "4";
-    return "1";
+
+    if (path.startsWith("/dashboard")) return "dashboard";
+    if (path.startsWith("/restaurant")) return "restaurant";
+    if (path.startsWith("/menu-builder")) return "menu-builder";
+    if (path.startsWith("/menu")) return "menu-catalog";
+    if (path.startsWith("/inventory")) return "inventory";
+
+    if (path.startsWith("/orders/active")) return "active-orders";
+    if (path.startsWith("/orders/pos")) return "pos";
+    if (path.startsWith("/orders/kds")) return "kds";
+    if (path.startsWith("/orders/history")) return "history";
+
+    return "dashboard";
   };
 
   return (
@@ -59,31 +71,62 @@ export default function Sidebar({ collapsed }: SidebarProps) {
         selectedKeys={[getSelectedKey()]}
         items={[
           {
-            key: "1",
+            key: "dashboard",
             icon: <DashboardOutlined />,
             label: "Dashboard",
             onClick: () => navigate("/dashboard"),
           },
           {
-            key: "2",
+            key: "restaurant",
             icon: <ShopOutlined />,
             label: "My Restaurant",
             onClick: () => navigate("/restaurant"),
           },
           {
-            key: "3",
+            key: "orders",
+            icon: <ShoppingCartOutlined />,
+            label: "Orders Management",
+            children: [
+              {
+                key: "active-orders",
+                icon: <CarryOutOutlined />,
+                label: "Active Orders",
+                onClick: () => navigate("/orders/active"),
+              },
+              {
+                key: "pos",
+                icon: <DesktopOutlined />,
+                label: "POS (New Order)",
+                onClick: () => navigate("/orders/pos"),
+              },
+              {
+                key: "kds",
+                icon: <FireOutlined />,
+                label: "Kitchen (KDS)",
+                onClick: () => navigate("/orders/kds"),
+              },
+              {
+                key: "history",
+                icon: <HistoryOutlined />,
+                label: "Order History",
+                onClick: () => navigate("/orders/history"),
+              },
+            ],
+          },
+          {
+            key: "menu-catalog",
             icon: <MenuOutlined />,
             label: "Menu Catalog",
             onClick: () => navigate("/menu"),
           },
           {
-            key: "5",
+            key: "menu-builder",
             icon: <HighlightOutlined />,
             label: "Menu Builder",
             onClick: () => navigate("/menu-builder"),
           },
           {
-            key: "4",
+            key: "inventory",
             icon: <DatabaseOutlined />,
             label: "Inventory",
             onClick: () => navigate("/inventory"),

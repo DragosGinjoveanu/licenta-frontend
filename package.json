@@ -19,6 +19,7 @@
     "antd": "^6.3.1",
     "array-move": "^4.0.0",
     "axios": "^1.13.5",
+    "dayjs": "^1.11.20",
     "laravel-echo": "^2.3.4",
     "pusher-js": "^8.5.0",
     "react": "^19.2.0",

@@ -1,5 +1,6 @@
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
+import axios from "axios";
 
 declare global {
   interface Window {
@@ -9,6 +10,19 @@ declare global {
 }
 
 window.Pusher = Pusher;
+
+const echoAxios = axios.create({
+  baseURL: "http://localhost",
+  withCredentials: true,
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
+  withXSRFToken: true,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+  },
+});
 
 window.Echo = new Echo({
   broadcaster: "reverb",
@@ -20,4 +34,23 @@ window.Echo = new Echo({
   encrypted: false,
   disableStats: true,
   enabledTransports: ["ws", "wss"],
+
+  authorizer: (channel: any) => {
+    return {
+      authorize: (socketId: string, callback: Function) => {
+        echoAxios
+          .post("/api/broadcasting/auth", {
+            socket_id: socketId,
+            channel_name: channel.name,
+          })
+          .then((response) => {
+            callback(false, response.data);
+          })
+          .catch((error) => {
+            console.error("Echo Auth failed:", error);
+            callback(true, error);
+          });
+      },
+    };
+  },
 });
