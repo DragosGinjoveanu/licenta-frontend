@@ -29,7 +29,7 @@ const { Text } = Typography;
 export default function IngredientsTab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIngredient, setEditingIngredient] = useState<Ingredient | null>(
-    null
+    null,
   );
 
   const [form] = Form.useForm();
@@ -116,7 +116,7 @@ export default function IngredientsTab() {
       dataIndex: "stock_quantity",
       key: "stock_quantity",
       render: (stock, record) => {
-        const isLowStock = stock <= record.alert_level;
+        const isLowStock = Number(stock) <= Number(record.alert_level);
         return (
           <Text type={isLowStock ? "danger" : undefined} strong={isLowStock}>
             {stock} {record.unit_of_measure}
@@ -180,7 +180,6 @@ export default function IngredientsTab() {
           onClick={() => {
             setEditingIngredient(null);
             form.resetFields();
-            // Setăm niște valori implicite pentru o adăugare mai rapidă
             form.setFieldsValue({
               stock_quantity: 0,
               alert_level: 0,

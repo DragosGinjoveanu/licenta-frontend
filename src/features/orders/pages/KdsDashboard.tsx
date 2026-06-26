@@ -113,7 +113,7 @@ export default function KdsDashboard() {
 
   const kdsOrders =
     activeOrders?.filter(
-      (o) => o.status === "pending" || o.status === "cooking"
+      (o) => o.status === "pending" || o.status === "cooking",
     ) || [];
 
   return (
@@ -197,19 +197,21 @@ export default function KdsDashboard() {
                 )}
 
               <ul style={{ paddingLeft: 20, margin: 0 }}>
-                {order.items?.map((item) => (
-                  <li
-                    key={item.id}
-                    style={{ marginBottom: 8, fontSize: "15px" }}
-                  >
-                    <strong>{item.quantity}x</strong> {item.product_name}
-                    {item.notes && (
-                      <div style={{ color: "#cf1322", fontSize: 13 }}>
-                        ⚠️ {item.notes}
-                      </div>
-                    )}
-                  </li>
-                ))}
+                {order.items?.map((item) => {
+                  return (
+                    <li
+                      key={item.id}
+                      style={{ marginBottom: 8, fontSize: "15px" }}
+                    >
+                      <strong>{item.quantity}x</strong> {item.product?.name}
+                      {item.notes && (
+                        <div style={{ color: "#cf1322", fontSize: 13 }}>
+                          ⚠️ {item.notes}
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
 
               {order.notes && (

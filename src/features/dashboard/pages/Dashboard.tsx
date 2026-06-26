@@ -203,7 +203,6 @@ export default function Dashboard() {
         </Col>
       </Row>
 
-      {/* GRAFICUL COMBINAT REVENUE VS PROFIT */}
       <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
         <Col span={24}>
           <Card
@@ -316,9 +315,7 @@ export default function Dashboard() {
         </Col>
       </Row>
 
-      {/* RÂNDUL CU 3 COLOANE ECHILIBRATE */}
       <Row gutter={[16, 16]}>
-        {/* 1. SALES MIX */}
         <Col xs={24} lg={8}>
           <Card
             title="Sales Mix (Distribution)"
@@ -352,7 +349,7 @@ export default function Dashboard() {
                         const displayName =
                           TYPE_LABELS[name as keyof typeof TYPE_LABELS] || name;
                         return `${displayName} ${((percent || 0) * 100).toFixed(
-                          0
+                          0,
                         )}%`;
                       }}
                     >
@@ -388,7 +385,6 @@ export default function Dashboard() {
           </Card>
         </Col>
 
-        {/* 2. TOP VOLUME (Cele mai vândute) */}
         <Col xs={24} lg={8}>
           <Card
             title="Top 5 Units Sold (Volume)"
@@ -454,7 +450,6 @@ export default function Dashboard() {
           </Card>
         </Col>
 
-        {/* 3. TOP MARGIN (Cele mai profitabile) */}
         <Col xs={24} lg={8}>
           <Card
             title="Top 5 Money Makers (Margin)"
